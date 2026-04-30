@@ -116,6 +116,25 @@ def combine_datasets():
 
     combined_df = combined_df.drop_duplicates()
 
+    combined_df["combined_text"] = (
+        combined_df["job_title"] + " " +
+        combined_df["company"] + " " +
+        combined_df["location"] + " " +
+        combined_df["job_description"] + " " +
+        combined_df["requirements"] + " " +
+        combined_df["salary"] + " " +
+        combined_df["contact_info"] + " " +
+        combined_df["pii_requests"] + " " +
+        combined_df["employment_type"]
+    )
+
+    combined_df["combined_text"] = (
+        combined_df["combined_text"]
+        .str.lower()
+        .str.replace(r"\s+", " ", regex=True)
+        .str.strip()
+    )
+
     combined_df.to_csv(OUTPUT_DIR / "combined_cleaned_jobs.csv", index=False)
 
     print("\nCOMBINED DATASET")
