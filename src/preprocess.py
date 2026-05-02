@@ -6,7 +6,7 @@ OUTPUT_DIR = Path("outputs/cleaned_data")
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-
+#reading the datasets and creating df from them
 def load_datasets():
     local_df = pd.read_excel(DATA_DIR / "local_data.xlsx")
     nigeria_df = pd.read_csv(DATA_DIR / "CompiledjobListNigeria.csv")
@@ -15,7 +15,7 @@ def load_datasets():
 
     return local_df, nigeria_df, fake_postings_df, kaggle_df
 
-
+#standerdizing column names for the datasets
 def standardize_columns():
     local_df, nigeria_df, fake_postings_df, kaggle_df = load_datasets()
 
@@ -50,7 +50,7 @@ def standardize_columns():
 
     return local_df, nigeria_df, fake_postings_df, kaggle_df
 
-
+#
 if __name__ == "__main__":
     datasets = standardize_columns()
 
