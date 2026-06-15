@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
         function: extractPageContent
       });
 
+      if (!isJobPage(result)) {
+        resultDiv.innerHTML =
+        "<b>This does not appear to be a job listing page. <b>";
+        return;
+      }
+
+
       const response = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
         headers: {
@@ -41,13 +48,78 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function isJobPage(text) {
+  const keywords = [
+    "job",
+    "vacancy",
+    "requirements",
+    "responsibilities",
+    "qualifications",
+    "apply",
+    "salary",
+    "application",
+    "employment",
+    "full time",
+    "part time",
+    "internship",
+
+  //add more keywords when needed
+  ];
+  const lower = text.toLowerCase();
+  let matches = 0;
+
+  for (const word of keywords) {
+    if(lower.includes(word))
+      matches++;
+  }
+
+  return matches >= 3;
+
+}
+
 function extractPageContent() {
-  const visibleText = document.body.innerText || "";
+  const selectors = [
+    "article",
+    "[role='main']",
+    "main",
+    ".job-description",
+    ".jobDescription",
+    ".job-details",
+    ".job-details-description",
+    ".description",
+    ".details",
+    ".posting",
+    ".vacancy",
+    ".job-post",
+    ".job",
+    ".content"
+
+  ];
+
+  let extractedText = "";
+
+  for (const selector of selectors) {
+    const element = document.querySelector(selector);
+
+    if (element) {
+      extractedText = element.innerText;
+      break;
+    }
+  }
+
+  if (!extractedText) {
+    extractedText = document.body.innerText;
+  }
 
   const links = Array.from(document.querySelectorAll("a"))
-    .map(link => link.href)
-    .filter(Boolean)
-    .join(" ");
+  .map(a => a.href)
+  .filter(Boolean)
+  .join("\n");
 
-  return visibleText + " " + links;
+  extractedText = extractedText
+  .replace(/\n{3,}/g,"\n\n")
+  .replace(/[ \t]+/g," ")
+  .trim();
+
+  return extractedText + "\n\n" + links;
 }
