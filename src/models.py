@@ -1,0 +1,29 @@
+from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import Float
+from sqlalchemy import String
+from sqlalchemy import DateTime
+
+from datetime import datetime
+
+from src.database import Base
+
+
+class JobScan(Base):
+
+    __tablename__ = "job_scans"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    prediction = Column(String)
+
+    fraud_probability = Column(Float)
+
+    risk_score = Column(Float)
+
+    confidence = Column(String)
+
+    scanned_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
