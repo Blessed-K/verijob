@@ -1,11 +1,14 @@
 from src.rule_engine import evaluate_rules
 from src.domain_checker import check_job_post
+from src.repository import Repository
 
 
 class RiskEngine:
 
     def __init__(self, model):
         self.model = model
+
+        self.repository = Repository()
 
     def analyze(self, text: str):
 
@@ -14,7 +17,7 @@ class RiskEngine:
         #Machine Learning Analysis
         probability = self.model.predict_proba([text])[0][1]
 
-        ml_score = probability * 100
+        ml_score = float(probability * 100)
 
         #Rule Analysis
         rule_result = evaluate_rules(text)
@@ -104,7 +107,7 @@ class RiskEngine:
 
         reasons.extend(company_result["reasons"])
 
-        return {
+        report = {
 
             "prediction": prediction,
 
@@ -125,6 +128,9 @@ class RiskEngine:
             "company_analysis": company_result
 
         }
+
+        self.repository.save_scan(report)
+        return report
     
     #confidence calculator
     def calculate_confidence(self, ml_score):
