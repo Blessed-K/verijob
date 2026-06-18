@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, field_validator
 import joblib
 from pathlib import Path
+from fastapi import HTTPException 
 
 from src.risk_engine import RiskEngine
 
@@ -40,4 +41,13 @@ def home():
 @app.post("/predict")
 def predict_job(post: JobPost):
 
-    return risk_engine.analyze(post.job_text)
+    try:
+        return risk_engine.analyze(post.job_text)
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Prediction failed: {str(e)}"
+        )
+
+  
