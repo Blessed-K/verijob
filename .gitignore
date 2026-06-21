@@ -1,4 +1,5 @@
 venv/
+.venv-verijob/
 __pycache__/
 .ipynb_checkpoints/
 
@@ -9,3 +10,5 @@ outputs/
 *.sqlite3
 .DS_Store
 .env
+frontend/node_modules/
+frontend/dist/
