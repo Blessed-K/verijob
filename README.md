@@ -96,7 +96,7 @@ Example Request
 Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/verijob.git
+git clone https://github.com/Blessed-K/verijob.git
 ```
 
 Install dependencies
