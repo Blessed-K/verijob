@@ -21,3 +21,4 @@ outputs/figures
 frontend/node_modules/
 frontend/dist/
 *.db
+.env
