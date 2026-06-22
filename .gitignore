@@ -4,7 +4,11 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Ignore generated reports only
-outputs/
+outputs/reports
+outputs/cleaned_data
+outputs/figures
+
+
 
 # Keep trained models
 !outputs/models/
