@@ -81,9 +81,9 @@ class RiskEngine:
 
     ):
 
-        weighted_ml = ml_score * 0.60
+        weighted_ml = ml_score * 0.80
 
-        weighted_rules = rule_result["rule_score"] * 0.25
+        weighted_rules = rule_result["rule_score"] * 0.15
 
         if domain_result["domain_risk"] == "Suspicious":
             domain_score = 15
@@ -94,7 +94,7 @@ class RiskEngine:
         else:
             domain_score = 0
 
-        weighted_domain = domain_score * 0.15
+        weighted_domain = domain_score * 0.05
 
         total_score = (
 
