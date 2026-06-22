@@ -12,4 +12,4 @@ outputs/
 .env
 frontend/node_modules/
 frontend/dist/
-.db
+*.db
