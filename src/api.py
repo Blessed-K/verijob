@@ -1,16 +1,26 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, field_validator
+from fastapi import HTTPException
+
 import joblib
 from pathlib import Path
-from fastapi import HTTPException 
 
 from src.risk_engine import RiskEngine
 
+# ADD THESE IMPORTS
+from src.database import engine
+from src.models import Base
+
+
 MODEL_PATH = Path("outputs/models/xgboost_model.pkl")
+
+# CREATE TABLES IF THEY DON'T EXIST
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="VeriJob Fraud Detection API")
 
 model = joblib.load(MODEL_PATH)
+
 risk_engine = RiskEngine(model)
 
 
@@ -24,10 +34,10 @@ class JobPost(BaseModel):
 
         if len(value) < 20:
             raise ValueError("Job text is too short to analyze")
-        
+
         if len(value) > 20000:
             raise ValueError("Job text is too long to analyze")
-        
+
         return value
 
 
@@ -43,11 +53,10 @@ def predict_job(post: JobPost):
 
     try:
         return risk_engine.analyze(post.job_text)
-    
+
     except Exception as e:
+
         raise HTTPException(
             status_code=500,
             detail=f"Prediction failed: {str(e)}"
         )
-
-  
