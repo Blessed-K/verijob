@@ -1,10 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "VeriJob Scam Detector",
+  "name": "VeriJob",
   "version": "1.0.0",
   "description": "Detects suspicious and fraudulent job postings using the VeriJob API.",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["<all_urls>", "http://127.0.0.1:8000/*", "http://localhost:8000/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://verijob-api.onrender.com http://127.0.0.1:8000 http://localhost:8000; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+  },
   "action": {
     "default_popup": "index.html",
     "default_title": "Scan job posting"

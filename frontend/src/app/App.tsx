@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { type ReactNode, useMemo, useState } from "react";
 import {
   AlertTriangle,
@@ -109,9 +111,10 @@ function getChromeApi() {
 }
 
 const IS_EXTENSION = Boolean(getChromeApi());
-const DEFAULT_API_BASE_URL = IS_EXTENSION ? "http://127.0.0.1:8000" : "/api";
+const DEFAULT_API_BASE_URL = IS_EXTENSION ? "https://verijob-api.onrender.com" : "/api";
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || DEFAULT_API_BASE_URL;
+
 
 const VERDICT_STYLE = {
   legitimate: {
@@ -300,14 +303,14 @@ function getVerdict(prediction: string): Verdict {
 
 function getVerdictLabel(verdict: Verdict) {
   if (verdict === "fraudulent") {
-    return "Likely Scam";
+    return "High Fraud Risk";
   }
 
   if (verdict === "suspicious") {
-    return "Suspicious";
+    return "Needs Verification";
   }
 
-  return "Likely Legit";
+  return "Verified Safe";
 }
 
 function getStatusForVerdict(verdict: Verdict): RowStatus {
@@ -504,78 +507,106 @@ export default function App() {
   };
 
   const cfg = result ? VERDICT_STYLE[result.verdict] : null;
+  const shellHeightClass = IS_EXTENSION ? "" : "min-h-[420px]";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f0f2f5] px-4 py-5 font-['Inter',system-ui,sans-serif]">
-      <div className="w-full max-w-[430px] bg-white rounded-2xl shadow-xl overflow-hidden border border-black/[0.06]">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center">
-              <Shield className="w-4 h-4 text-white" strokeWidth={2.5} />
+    <div className={IS_EXTENSION
+      ? "bg-[#f8fafc] p-2.5 font-['Inter',system-ui,sans-serif]"
+      : "min-h-screen bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.15),_transparent_35%),linear-gradient(180deg,#eef4ff_0%,#f8fafc_48%,#eef2f7_100%)] px-4 py-4 font-['Inter',system-ui,sans-serif]"
+    }>
+      <div
+        className={IS_EXTENSION
+          ? "w-full flex flex-col overflow-hidden rounded-[20px] border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.03)] max-h-card"
+          : `mx-auto flex w-full max-w-[380px] flex-col overflow-hidden rounded-[24px] border border-white/70 bg-white/95 shadow-[0_20px_50px_rgba(15,23,42,0.08)] backdrop-blur transition-all duration-300 ${shellHeightClass} max-h-card`
+        }
+      >
+        <div className="border-b border-slate-100/80 px-5 py-4">
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-[0_8px_20px_rgba(37,99,235,0.25)]">
+              <Shield className="h-5 w-5 text-white" strokeWidth={2.2} />
             </div>
-            <span className="text-[15px] font-semibold text-gray-900">VeriJob</span>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[16px] font-bold tracking-tight text-slate-950">VeriJob</span>
+                <span className="rounded-full border border-blue-100 bg-blue-50/50 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-blue-600">
+                  Scam Detector
+                </span>
+              </div>
+              <p className="mt-1 text-[12px] leading-4.5 text-slate-500">
+                Analyze job posts and flag recruitment scams before you apply.
+              </p>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={() => window.open(`${API_BASE_URL}/`, "_blank", "noopener,noreferrer")}
-            className="h-8 w-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors cursor-pointer"
-            aria-label="Open API status"
-            title="Open API status"
-          >
-            <Server className="w-[18px] h-[18px]" />
-          </button>
         </div>
 
-        <div className="px-5 py-5">
+        <div className="flex-1 overflow-y-auto px-5 py-4">
           {!result && !scanning && (
-            <div className="flex flex-col py-3 gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-blue-600" strokeWidth={1.5} />
+            <div className="flex flex-col gap-4">
+              <div className="rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-50 to-blue-50/40 p-4">
+                <p className="text-[12px] font-semibold text-slate-900 mb-3">Analysis Indicators:</p>
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="flex flex-col items-center justify-center rounded-xl bg-white p-2 shadow-[0_2px_8px_rgba(0,0,0,0.02)] ring-1 ring-slate-100">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 mb-1">
+                      <ScanLine className="h-4 w-4" />
+                    </div>
+                    <span className="text-[10px] font-medium text-slate-600">Risk Score</span>
+                  </div>
+                  <div className="flex flex-col items-center justify-center rounded-xl bg-white p-2 shadow-[0_2px_8px_rgba(0,0,0,0.02)] ring-1 ring-slate-100">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 mb-1">
+                      <AlertTriangle className="h-4 w-4" />
+                    </div>
+                    <span className="text-[10px] font-medium text-slate-600">Rule Flags</span>
+                  </div>
+                  <div className="flex flex-col items-center justify-center rounded-xl bg-white p-2 shadow-[0_2px_8px_rgba(0,0,0,0.02)] ring-1 ring-slate-100">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-green-50 text-green-600 mb-1">
+                      <Building2 className="h-4 w-4" />
+                    </div>
+                    <span className="text-[10px] font-medium text-slate-600">Domain Risk</span>
+                  </div>
+                </div>
               </div>
 
               {IS_EXTENSION ? (
                 <button
                   onClick={handleScanPage}
-                  className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.2)] transition-all duration-200 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98]"
                 >
-                  <ScanLine className="w-4 h-4" />
+                  <ScanLine className="h-4 w-4" />
                   Scan Current Page
                 </button>
               ) : (
-                <>
-                  <div>
-                    <label htmlFor="jobText" className="text-[13px] font-semibold text-gray-900">
-                      Job listing text
-                    </label>
-                    <textarea
-                      id="jobText"
-                      value={jobText}
-                      onChange={(event) => {
-                        setJobText(event.target.value);
-                        setError(null);
-                      }}
-                      className="mt-2 h-40 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-[13px] leading-5 text-gray-800 outline-none transition-colors placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                      placeholder="Paste the job advert, recruiter message, or vacancy description."
-                    />
-                    <div className="mt-2 flex items-center justify-between text-[12px] text-gray-400">
-                      <span>{trimmedText.length.toLocaleString()} characters</span>
-                      <span>Minimum 20</span>
-                    </div>
+                <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                  <label htmlFor="jobText" className="text-[12px] font-semibold text-slate-900">
+                    Job listing text
+                  </label>
+                  <textarea
+                    id="jobText"
+                    value={jobText}
+                    onChange={(event) => {
+                      setJobText(event.target.value);
+                      setError(null);
+                    }}
+                    className="mt-2 h-32 w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-[13px] leading-5 text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                    placeholder="Paste the job details or recruiter message to scan."
+                  />
+                  <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+                    <span>{trimmedText.length.toLocaleString()} characters</span>
+                    <span>Min 20 characters</span>
                   </div>
 
                   <button
                     onClick={handleManualScan}
                     disabled={!canScanManualText}
-                    className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-blue-700 active:bg-blue-800 disabled:cursor-not-allowed disabled:bg-gray-300"
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.2)] transition-all duration-200 hover:from-blue-700 hover:to-indigo-700 disabled:cursor-not-allowed disabled:from-slate-200 disabled:to-slate-200 disabled:text-slate-400 disabled:shadow-none"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="h-4 w-4" />
                     Scan Text
                   </button>
-                </>
+                </div>
               )}
 
               {error && (
-                <div className="rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-[13px] leading-5 text-red-700">
+                <div className="rounded-xl border border-red-100 bg-red-50/70 px-3 py-2 text-[12px] leading-5 text-red-700">
                   {error}
                 </div>
               )}
@@ -583,40 +614,57 @@ export default function App() {
           )}
 
           {scanning && (
-            <div className="flex flex-col items-center py-8 gap-3">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-[13px] text-gray-400">Analyzing job listing...</p>
+            <div className="flex flex-col items-center gap-3 py-10 text-center">
+              <Loader2 className="h-7 w-7 animate-spin text-blue-600" />
+              <div>
+                <p className="text-[13px] font-semibold text-slate-900">Analyzing job listing</p>
+                <p className="mt-1 text-[11px] text-slate-500">This usually takes a few seconds.</p>
+              </div>
             </div>
           )}
 
           {result && cfg && (
-            <div>
-              {result.source && (
-                <div className="mb-4 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2">
-                  <p className="truncate text-[12px] font-semibold text-gray-700">
-                    {result.source.title}
-                  </p>
-                  <p className="mt-0.5 truncate text-[11px] text-gray-400">
-                    {getUrlHost(result.source.url)}
-                  </p>
-                </div>
-              )}
-
-              <div className="mb-4">
-                <p className="text-[11px] font-medium text-gray-400 uppercase mb-2">
-                  Risk Score
-                </p>
-                <div className="flex items-center justify-between mb-2.5">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-gray-900">{result.score}</span>
-                    <span className="text-base text-gray-400 font-medium">/100</span>
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50/50 px-4 py-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      Result source
+                    </p>
+                    {result.source ? (
+                      <>
+                        <p className="mt-1 truncate text-[13px] font-bold text-slate-800">
+                          {result.source.title}
+                        </p>
+                        <p className="mt-0.5 truncate text-[11px] text-slate-400">{getUrlHost(result.source.url)}</p>
+                      </>
+                    ) : (
+                      <p className="mt-1 text-[13px] font-bold text-slate-800">Manual text scan</p>
+                    )}
                   </div>
-                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-semibold ${cfg.badge}`}>
-                    <cfg.icon className={`w-3.5 h-3.5 ${cfg.iconColor}`} />
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${cfg.badge}`}
+                  >
+                    <cfg.icon className={`h-3.5 w-3.5 ${cfg.iconColor}`} />
                     {result.verdictLabel}
                   </span>
                 </div>
-                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+              </div>
+
+              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      Scam Risk Score
+                    </p>
+                    <div className="mt-1 flex items-baseline gap-1">
+                      <span className="text-3xl font-extrabold tracking-tight text-slate-950">
+                        {result.score}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
                   <div
                     className={`h-full rounded-full transition-all duration-700 ${cfg.bar}`}
                     style={{ width: `${result.score}%` }}
@@ -624,41 +672,45 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-100 mb-4" />
-
-              <div className="flex flex-col gap-0">
-                {result.rows.map((row, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0"
-                  >
-                    <div className="flex items-center gap-2.5 text-gray-400">
-                      {row.icon}
-                      <span className="text-[13px] text-gray-600">{row.label}</span>
+              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                <div className="grid gap-2">
+                  {result.rows.map((row, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between rounded-xl bg-slate-50/50 px-3 py-2"
+                    >
+                      <div className="flex items-center gap-2 text-slate-400">
+                        <span className="text-slate-500">{row.icon}</span>
+                        <span className="text-[12px] font-medium text-slate-600">{row.label}</span>
+                      </div>
+                      <div className="flex max-w-[190px] items-center justify-end gap-1.5 text-right">
+                        <span
+                          className={`text-[12px] font-semibold ${
+                            row.status === "ok" ? "text-green-600" : row.status === "warn" ? "text-amber-600" : "text-red-600"
+                          }`}
+                        >
+                          {row.value}
+                        </span>
+                        {STATUS_ICONS[row.status]}
+                      </div>
                     </div>
-                    <div className="flex max-w-[190px] items-center justify-end gap-1.5 text-right">
-                      <span className={`text-[13px] font-medium ${
-                        row.status === "ok" ? "text-green-600" : row.status === "warn" ? "text-amber-600" : "text-red-600"
-                      }`}>
-                        {row.value}
-                      </span>
-                      {STATUS_ICONS[row.status]}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              <div className="mt-4 rounded-xl bg-gray-50 px-3 py-3">
-                <p className="text-[13px] leading-5 text-gray-700">{result.summary}</p>
-                <p className="mt-2 text-[12px] leading-5 text-gray-500">{result.recommendation}</p>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3.5">
+                <p className="text-[12px] font-medium leading-5 text-slate-700">{result.summary}</p>
+                <p className="mt-1.5 text-[11px] leading-4 text-slate-500 border-t border-slate-200/55 pt-2">{result.recommendation}</p>
               </div>
 
               {result.reasons.length > 0 && (
-                <div className="mt-4">
-                  <p className="mb-2 text-[11px] font-medium uppercase text-gray-400">Detected Reasons</p>
+                <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                    Risk Factors Detected
+                  </p>
                   <ul className="flex flex-col gap-2">
                     {result.reasons.slice(0, 4).map((reason) => (
-                      <li key={reason} className="flex gap-2 text-[12px] leading-5 text-gray-600">
+                      <li key={reason} className="flex gap-2 rounded-xl bg-amber-50/30 p-2 border border-amber-100/30 text-[11px] leading-4 text-slate-600">
                         <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
                         <span>{reason}</span>
                       </li>
@@ -669,10 +721,10 @@ export default function App() {
 
               <button
                 onClick={handleReset}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-2.5 text-[13px] font-medium text-gray-500 transition-colors hover:bg-gray-50"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 text-[12px] font-bold text-slate-600 transition-colors hover:bg-slate-50"
               >
-                <RefreshCw className="w-4 h-4" />
-                Scan Another
+                <RefreshCw className="h-4 w-4" />
+                Scan Another Page
               </button>
             </div>
           )}

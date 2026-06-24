@@ -5,10 +5,45 @@
       
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Job Scam Scanner Popup</title>
+      <title>VeriJob</title>
       <meta name="description" content="Scan job listings for scam risks with clear color-coded results and detailed reasons to help users identify legitimate, suspicious, or fraudulent offers." />
       <meta name="robots" content="noindex, nofollow" />
-      <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
+      <style>
+        html, body { height: 100%; margin: 0; }
+        #root { height: 100%; }
+        html.is-extension, html.is-extension body {
+          width: 380px;
+          height: auto;
+          max-height: 600px;
+          overflow: hidden; /* Hide window-level scrollbars completely */
+        }
+        html.is-extension #root {
+          height: auto;
+          width: 100%;
+        }
+        html.is-extension .min-h-screen {
+          min-height: auto;
+        }
+        html.is-extension .max-h-card {
+          max-height: 560px;
+        }
+        
+        /* Clean up scrollbars inside the extension */
+        html.is-extension *::-webkit-scrollbar {
+          width: 5px;
+          height: 5px;
+        }
+        html.is-extension *::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        html.is-extension *::-webkit-scrollbar-thumb {
+          background: rgba(148, 163, 184, 0.25);
+          border-radius: 99px;
+        }
+        html.is-extension *::-webkit-scrollbar-thumb:hover {
+          background: rgba(148, 163, 184, 0.45);
+        }
+      </style>
       
     </head>
 
