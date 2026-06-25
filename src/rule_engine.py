@@ -5,17 +5,17 @@ RULES = {
 
     "advance_payment": {
         "patterns": [
-            r"registration fee",
-            r"application fee",
-            r"processing fee",
-            r"training fee",
-            r"security deposit",
-            r"activation fee",
-            r"pay.*registration",
-            r"pay.*before interview",
-            r"payment required before",
-            r"deposit required",
-            r"pay before employment"
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )registration fee",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )application fee",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )processing fee",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )training fee",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )security deposit",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )activation fee",
+            r"(?<!do not )(?<!don't )(?<!never )pay.*registration",
+            r"(?<!do not )(?<!don't )(?<!never )pay.*before interview",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )payment required before",
+            r"(?<!no )(?<!not )(?<!never )(?<!without )(?<!any )deposit required",
+            r"(?<!do not )(?<!don't )(?<!never )pay before employment"
         ],
         "score": 35,
         "category": "Payment Scam",
