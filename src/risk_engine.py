@@ -1,8 +1,6 @@
 from src.rule_engine import evaluate_rules
 from src.domain_checker import check_job_post
 from src.repository import Repository
-# checking time taken by each Module
-#import time
 
 
 
@@ -14,42 +12,18 @@ class RiskEngine:
         self.repository = Repository()
 
     def analyze(self, text: str):
-#implementing time module
+
         text = text.strip().lower()
 
-        #line below is for checking time for ml
-        #print(f"Characters sent to model: {len(text)}")
-
-
-        #start = time.perf_counter()
-
         probability = self.model.predict_proba([text])[0][1]
-       #model split timer
-        #vectorizer = self.model.named_steps["tfdif"]
-        #classifier = self.model.named_steps["classifier"]
-
-        #start_vec = time.perf_counter()
-        #X = vectorizer.transform([text])
-        #end_vec = time.perf_counter()
-
-        #start_clf = time.perf_counter()
-        #probability = classifier.predict_proba(X)[0][1]
-        #end_clf = time.perf_counter()
-
-        #print(f"Vectorizer: {(end_vec-start_vec):.3f}s")
-        #print(f"Classifier: {(end_clf-start_clf):.3f}s")
-
-#continuation of normal code
-        #ml_time = time.perf_counter()
-
+       
         ml_score = float(probability * 100)
 
         rule_result = evaluate_rules(text)
-        #rule_time =time.perf_counter()
+       
 
         domain_result = check_job_post(text)
-        #domain_time = time.perf_counter()
-
+       
         report = self.calculate_risk(
 
             ml_score,
@@ -60,15 +34,7 @@ class RiskEngine:
 
         )
         return report
-        #time report
-        #end = time.perf_counter()
-        #print(f"ML: {(ml_time - start):.3f}s")
-        #print(f"Rules: {(rule_time - ml_time):.3f}s")
-        #print(f"Domain: {(domain_time - rule_time):.3f}s")
-        #print(f"Total Backend: {(end - start):.3f}s")
-
-        #return report
-
+       
     def calculate_risk(
 
         self,
