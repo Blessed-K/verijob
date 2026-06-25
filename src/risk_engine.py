@@ -81,31 +81,20 @@ class RiskEngine:
 
     ):
 
-        weighted_ml = ml_score * 0.80
+        # Base score is the ML probability
+        total_score = ml_score
 
-        weighted_rules = rule_result["rule_score"] * 0.15
+        # Add rule penalties directly
+        total_score += rule_result["rule_score"]
 
+        # Add domain penalties directly
         if domain_result["domain_risk"] == "Suspicious":
-            domain_score = 15
+            total_score += 25
 
         elif domain_result["domain_risk"] == "Caution":
-            domain_score = 5
+            total_score += 10
 
-        else:
-            domain_score = 0
-
-        weighted_domain = domain_score * 0.05
-
-        total_score = (
-
-            weighted_ml
-
-            + weighted_rules
-
-            + weighted_domain
-
-        )
-
+        # Cap at 100
         total_score = round(
 
             min(total_score, 100),
