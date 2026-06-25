@@ -12,25 +12,28 @@ class Repository:
     
     def save_scan(self, report):
 
-        scan = JobScan(
+        try:
+            scan = JobScan(
 
-            prediction=report["prediction"],
+                prediction=report["prediction"],
 
-            fraud_probability=report["fraud_probability"],
+                fraud_probability=report["fraud_probability"],
 
-            risk_score=report["risk_score"],
+                risk_score=report["risk_score"],
 
-            confidence=report["confidence"]
+                confidence=report["confidence"]
 
-        )
+            )
 
-        self.db.add(scan)
+            self.db.add(scan)
 
-        self.db.commit()
+            self.db.commit()
 
-        self.db.refresh(scan)
+            self.db.refresh(scan)
 
-        return scan
+            return scan
+        finally:
+            db.close()
     
     def get_recent_scans(self, limit=10):
 

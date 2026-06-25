@@ -80,7 +80,7 @@ def prepare_common_dataset(df):
         if col not in df.columns:
             df[col] = ""
 
-    df = df[COMMON_COLUMNS]
+    df = df[COMMON_COLUMNS].copy()
 
     text_cols = [
         "job_title",
