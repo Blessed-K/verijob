@@ -8,7 +8,8 @@ FREE_EMAIL_PROVIDERS = {
     "outlook.com",
     "hotmail.com",
     "icloud.com",
-    "protonmail.com"
+    "protonmail.com",
+    "consultant.com"
 }
 
 SUSPICIOUS_TLDS = {

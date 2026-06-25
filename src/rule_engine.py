@@ -68,6 +68,93 @@ RULES = {
         "score": 25,
         "category": "Payment Scam",
         "reason": "The advert requests cryptocurrency payment."
+    },
+
+    "logistics_scam": {
+        "patterns": [
+            r"package forwarding",
+            r"package forwarder",
+            r"re-package",
+            r"receive packages",
+            r"receive incoming parcels",
+            r"inspect physical merchandise",
+            r"home delivery inspection"
+        ],
+        "score": 35,
+        "category": "Logistics Scam",
+        "reason": "The job description details package-forwarding tasks from a home address, indicative of a package mule scam."
+    },
+
+    "malware_download": {
+        "patterns": [
+            r"\.exe",
+            r"\.zip",
+            r"assessment tool",
+            r"download.*assessment",
+            r"install.*software",
+            r"proprietary.*tool",
+            r"moderator_assessment"
+        ],
+        "score": 40,
+        "category": "Malware Risk",
+        "reason": "The listing requires downloading/installing executable software (.exe or .zip) for interview screening, presenting a malware risk."
+    },
+
+    "pii_harvesting": {
+        "patterns": [
+            r"social security number",
+            r"ssn",
+            r"driver's license",
+            r"upload.*id",
+            r"upload.*state id",
+            r"front and back photos"
+        ],
+        "score": 35,
+        "category": "Identity Phishing",
+        "reason": "The listing asks for highly sensitive personally identifiable information (SSN/ID upload) before a formal interview."
+    },
+
+    "unofficial_interview": {
+        "patterns": [
+            r"skype chat",
+            r"text-based interview",
+            r"interview.*skype",
+            r"interview.*telegram",
+            r"interview.*whatsapp",
+            r"interview.*signal"
+        ],
+        "score": 20,
+        "category": "Communication",
+        "reason": "The recruiter proposes conducting interviews entirely via text-based chat channels."
+    },
+
+    "financial_forwarding": {
+        "patterns": [
+            r"transaction assistant",
+            r"receive funds",
+            r"forward funds",
+            r"commission per transaction",
+            r"percent per transaction",
+            r"process payments"
+        ],
+        "score": 35,
+        "category": "Financial Scam",
+        "reason": "The role involves receiving and forwarding money, which is typical of money laundering / fake check scams."
+    },
+
+    "check_scam": {
+        "patterns": [
+            r"cashier's check",
+            r"certified check",
+            r"mail.*check",
+            r"send.*check",
+            r"purchase.*equipment",
+            r"purchase.*laptop",
+            r"approved equipment vendor"
+        ],
+        "score": 35,
+        "category": "Check Scam",
+        "reason": "The advert details a check-cashing scheme for purchasing equipment, which is a common employment scam."
     }
 
 }
