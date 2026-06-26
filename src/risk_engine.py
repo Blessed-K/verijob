@@ -30,7 +30,9 @@ class RiskEngine:
 
             rule_result,
 
-            domain_result
+            domain_result,
+
+            text
 
         )
         return report
@@ -43,7 +45,9 @@ class RiskEngine:
 
         rule_result,
 
-        domain_result
+        domain_result,
+
+        text
 
     ):
 
@@ -77,7 +81,9 @@ class RiskEngine:
 
             rule_result,
 
-            domain_result
+            domain_result,
+
+            text
 
         )
 
@@ -91,7 +97,9 @@ class RiskEngine:
 
         rule_result,
 
-        domain_result
+        domain_result,
+
+        text
 
     ):
 
@@ -169,7 +177,9 @@ class RiskEngine:
 
             "rule_analysis": rule_result,
 
-            "domain_analysis": domain_result
+            "domain_analysis": domain_result,
+
+            "job_text": text
 
         }
 

@@ -1,13 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, field_validator
 from fastapi import HTTPException
-
 import joblib
 from pathlib import Path
-
 from src.risk_engine import RiskEngine
-
-# ADD THESE IMPORTS
 from src.database import engine
 from src.models import Base
 

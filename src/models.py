@@ -19,6 +19,8 @@ class JobScan(Base):
 
     fraud_probability = Column(Float)
 
+    job_text = Column(String)
+
     risk_score = Column(Float)
 
     confidence = Column(String)

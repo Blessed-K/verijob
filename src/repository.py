@@ -16,7 +16,8 @@ class Repository:
                 prediction=report["prediction"],
                 fraud_probability=report["fraud_probability"],
                 risk_score=report["risk_score"],
-                confidence=report["confidence"]
+                confidence=report["confidence"],
+                job_text=report["job_text"]
             )
             self.db.add(scan)
             self.db.commit()
