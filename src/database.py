@@ -6,6 +6,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
 
+#check the database url and configure accordingly
+
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "sqlite:///verijob.db"

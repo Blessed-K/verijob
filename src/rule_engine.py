@@ -171,6 +171,7 @@ def evaluate_rules(text):
     triggered_rules = []
 
     findings = []
+    #checking if text violates any rules
 
     for rule_name, rule in RULES.items():
 
@@ -179,6 +180,8 @@ def evaluate_rules(text):
             if re.search(pattern, text):
 
                 total_score += rule["score"]
+
+                #adding reasons to the empty strings defined earlier
 
                 reasons.append(rule["reason"])
 
@@ -197,7 +200,7 @@ def evaluate_rules(text):
                 break
 
     return {
-
+#final result from the comparision function
         "rule_score": total_score,
 
         "reasons": list(dict.fromkeys(reasons)),

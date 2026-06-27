@@ -10,6 +10,7 @@ from src.database import Base
 
 
 class JobScan(Base):
+    #creating table structure
 
     __tablename__ = "job_scans"
 

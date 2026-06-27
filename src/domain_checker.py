@@ -1,7 +1,7 @@
 import re
 from urllib.parse import urlparse
 
-
+#description of likely checks
 FREE_EMAIL_PROVIDERS = {
     "gmail.com",
     "yahoo.com",
@@ -29,12 +29,12 @@ SHORTENERS = {
     "cutt.ly"
 }
 
-
+#checks emails if present
 def extract_emails(text):
     pattern = r"[\w\.-]+@[\w\.-]+\.\w+"
     return re.findall(pattern, text)
 
-
+#checks urls if present
 def extract_urls(text):
     pattern = r"https?://[^\s]+|www\.[^\s]+"
     return re.findall(pattern, text)

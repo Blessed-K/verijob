@@ -5,6 +5,7 @@ from src.repository import Repository
 
 
 class RiskEngine:
+    #combines ML predictions, rule matching and domain analysis
 
     def __init__(self, model):
 
@@ -12,6 +13,7 @@ class RiskEngine:
         self.repository = Repository()
 
     def analyze(self, text: str):
+        #normalizes the text to match that of preprocessed data
 
         text = text.strip().lower()
 
@@ -50,7 +52,7 @@ class RiskEngine:
         text
 
     ):
-
+#calling the results from the other modules
         # Base score is the ML probability
         total_score = ml_score
 

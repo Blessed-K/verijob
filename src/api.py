@@ -21,11 +21,13 @@ risk_engine = RiskEngine(model)
 
 
 class JobPost(BaseModel):
-    job_text: str
+    #job advert submitted for analysis
+    job_text: str 
 
     @field_validator("job_text")
     @classmethod
     def validate_job_text(cls, value):
+        #checks character length of an advert
         value = value.strip()
 
         if len(value) < 20:
@@ -38,6 +40,7 @@ class JobPost(BaseModel):
 
 
 @app.get("/")
+#confirms api is running
 def home():
     return {
         "message": "VeriJob Fraud Detection API is running"
@@ -45,6 +48,7 @@ def home():
 
 
 @app.post("/predict")
+#endpoint where extension calls and where text is sent to risk_engine
 def predict_job(post: JobPost):
 
     try:
